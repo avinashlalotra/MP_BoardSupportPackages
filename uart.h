@@ -1,8 +1,11 @@
 
-#ifndef _UART_H
+#ifndef UART_H
 #define UART_H
-
-extern void uart_set_div(unsigned int div);
-extern void uart_putchar(char ch);
+#include <stdint.h>
+#define UART_DIV ((volatile uint32_t *) 0x02000004)
+#define UART_DATA ((volatile uint32_t *) 0x02000008)
+void uart_set_div(unsigned int div);
+void uart_putchar(char ch);
+void putstr(const char *str);
 
 #endif

@@ -1,34 +1,33 @@
+#ifndef SYSTOLIC_ARRAY_H
+#define SYSTOLIC_ARRAY_H
+
 #include <stdint.h>
 
-#define DIM 2  // A 2*2 Systolic Array
-#define BASE_ADDRESS 0x03000000
+#define SYSTOLIC_BASE 0x03000000 // Base address of the SYSTOLIC module
+#define REG_WRITE(addr, val) (*(volatile uint32_t *)(addr) = (val))
+#define REG_READ(addr) (*(volatile uint32_t *)(addr))
 
-// Register Addresses
-#define CONTROL_REG  0x00
-#define STATUS_REG   0x04
-#define NORTH_0      0x08
-#define NORTH_1      0x0C
-#define WEST_0       0x10
-#define WEST_1       0x14
-#define RESULT_00    0x18
-#define RESULT_01    0x1C
-#define RESULT_10    0x20
-#define RESULT_11    0x24
+// Instruction encodings
+#define RESET           0x00010000
+#define WRITE_WEST_0    0x00020000
+#define WRITE_WEST_1    0x00030000
+#define WRITE_NORTH_0   0x00040000
+#define WRITE_NORTH_1   0x00050000
+#define STATUS          0x00060000
+#define READ_R00        0x00070000
+#define READ_R01        0x00080000
+#define READ_R10        0x00090000
+#define READ_R11        0x000A0000
+#define START           0x000B0000
 
-// Control Words
-#define RESET_WORD   0x000000FF
-#define START_WORD   0x0000FF00
-#define NO_OP_WORD   0x00000000
-#define SHIFT_WORD   0x000F0000
-#define FLOW_WORD    0x00F00000
+void systolic_reset(void);
 
-void write_register(uint32_t offset , uint32_t value);
-uint32_t read_register(uint32_t offset ) ;
+void systolic_write_inputs(uint16_t a00, uint16_t a01, uint16_t a10, uint16_t a11) ;
 
-void send_matrix(uint32_t matrixA[DIM][DIM], uint32_t matrixB[DIM][DIM]);
-void recv_matrix(uint32_t matrixR[DIM][DIM]);
+void systolic_start(void);
 
+void systolic_read_results(uint32_t *r00, uint32_t *r01, uint32_t *r10, uint32_t *r11);
 
+uint8_t systolic_status(void);
 
-
-
+#endif // SYSTOLIC_ARRAY_H

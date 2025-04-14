@@ -1,5 +1,5 @@
 MEMORY {
-    RAM (xrw) : ORIGIN = 0x00000000, LENGTH = 16K
+    RAM (xrw) : ORIGIN = 0x00000000, LENGTH = 32K
 }
 
 SECTIONS {
@@ -13,15 +13,13 @@ SECTIONS {
     } >RAM
 
     /* Read-only data section */
-    .rodata :
+    .rodata : AT(_etext)
     {
         . = ALIGN(4);
         *(.rodata*)
         . = ALIGN(4);
         _erodata = .;
     } >RAM
-
-
     /* Initialized data section */
     .data : AT(_etext)
     {
@@ -41,12 +39,7 @@ SECTIONS {
         . = ALIGN(4);
         _ebss = .;
     } >RAM
+
     /* Stack at the top of RAM */
-    .stack (NOLOAD) :
-    {
-        . = ALIGN(8);
-        _stack_end = .;
-        . += 8K;  /* Allocating 8 KB for stack */
-        _stack_top = .;
-    } >RAM
+    _stack_top = ORIGIN(RAM) + LENGTH(RAM);
 }
