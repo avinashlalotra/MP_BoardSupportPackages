@@ -1,0 +1,7 @@
+*.log       # Ignore all log files
+*.map       # Ignore all map files (often linker maps or debug info)
+*.mem       # Ignore memory-related files (could be used in simulations, etc.)
+*.o         # Ignore object files
+*.h.ghc     # Ignore GHC-specific header artifacts (Haskell-related)
+*.elf       # Ignore ELF binaries (commonly output of embedded builds)
+
