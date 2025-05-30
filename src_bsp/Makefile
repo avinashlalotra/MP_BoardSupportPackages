@@ -16,6 +16,7 @@ all : $(LIBNAME)
 
 
 $(LIBNAME) :$(OBJECTS) 
+	mkdir -p ../lib
 	$(AR) $(ARFLAGS) $@ $^
 	cp $(LIBNAME) ../lib/
 
